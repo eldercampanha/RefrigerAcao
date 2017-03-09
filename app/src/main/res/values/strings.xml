@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">RefrigerAcao</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="no_account_created">No account yet? Create one</string>
 </resources>
