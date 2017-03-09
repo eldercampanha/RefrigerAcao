@@ -1,4 +1,4 @@
-package com.app.refrigeracao;
+package br.com.refrigeracao.app;
 
 import org.junit.Test;
 
