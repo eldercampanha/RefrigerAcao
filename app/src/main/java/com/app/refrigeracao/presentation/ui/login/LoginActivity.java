@@ -1,9 +1,11 @@
-package com.app.refrigeracao;
+package com.app.refrigeracao.presentation.ui.login;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class Login extends AppCompatActivity {
+import com.app.refrigeracao.R;
+
+public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
