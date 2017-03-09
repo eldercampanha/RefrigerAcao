@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "123625977201",
+    "firebase_url": "https://refrigeracao-5eb36.firebaseio.com",
+    "project_id": "refrigeracao-5eb36",
+    "storage_bucket": "refrigeracao-5eb36.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123625977201:android:6c1834890aa76a96",
+        "android_client_info": {
+          "package_name": "com.sample.firebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "123625977201-7e3t39vvn981oqovc5tn2mnke19m1vve.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBC57k4oOCyf3jgsa6K7-qyPPiGo_2x-qw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123625977201:android:2dfa97fb9d2bf813",
+        "android_client_info": {
+          "package_name": "com.app.refrigeracao"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "123625977201-7e3t39vvn981oqovc5tn2mnke19m1vve.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBC57k4oOCyf3jgsa6K7-qyPPiGo_2x-qw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
