@@ -4,4 +4,5 @@
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="no_account_created">No account yet? Create one</string>
+    <string name="txt_required">Required Field</string>
 </resources>
