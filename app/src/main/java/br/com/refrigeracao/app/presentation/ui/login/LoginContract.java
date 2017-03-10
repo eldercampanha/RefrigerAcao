@@ -10,7 +10,7 @@ public interface LoginContract {
 
         void onAuthSuccess();
 
-        void showError(String message);
+        void showError(int messageId);
 
         void showLoading();
 

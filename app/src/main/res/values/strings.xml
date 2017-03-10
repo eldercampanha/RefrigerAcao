@@ -5,4 +5,6 @@
     <string name="login">Login</string>
     <string name="no_account_created">No account yet? Create one</string>
     <string name="txt_required">Required Field</string>
+    <string name="valid_email">valid email id is required</string>
+    <string name="loging_error">Error when trying to log in</string>
 </resources>

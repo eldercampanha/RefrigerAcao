@@ -7,6 +7,8 @@ import android.widget.EditText;
 
 import com.app.refrigeracao.R;
 
+import java.util.regex.Pattern;
+
 import br.com.refrigeracao.app.presentation.ui.login.LoginActivity;
 
 /**
@@ -44,6 +46,26 @@ public class AppHelper {
             }
 
         }
+        return isValid;
+    }
+
+    public boolean validateEmail(TextInputLayout inputEmail) {
+        String email = inputEmail.getEditText().getText().toString().trim();
+        boolean isValid = true;
+
+        Pattern EMAIL_ADDRESS_PATTERN = Pattern
+                .compile("[a-zA-Z0-9+._%-+]{1,256}" + "@"
+                        + "[a-zA-Z0-9][a-zA-Z0-9-]{0,64}" + "(" + "."
+                        + "[a-zA-Z0-9][a-zA-Z0-9-]{0,25}" + ")+");
+        if(!EMAIL_ADDRESS_PATTERN.matcher(email).matches())
+        {
+            isValid = false;
+            inputEmail.setError(mContext.getString(R.string.valid_email));
+            inputEmail.setErrorEnabled(true);
+        } else {
+            inputEmail.setErrorEnabled(false);
+        }
+
         return isValid;
     }
 }

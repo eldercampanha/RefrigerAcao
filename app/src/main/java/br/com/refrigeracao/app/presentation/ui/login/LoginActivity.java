@@ -38,9 +38,14 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
         // binding
         ButterKnife.bind(this);
-        presenter = new LoginPresenter();
+        presenter = new LoginPresenter(this);
         presenter.setView(this);
         appHelper = new AppHelper(this);
+
+        // TODO: remove bellow code for testing
+        txtEmail.getEditText().setText("new@user.com");
+        txtPassword.getEditText().setText("New12345");
+
     }
 
     @Override
@@ -51,15 +56,15 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
 
     // PRESENTER METHODS
-    @Overridet 
+    @Override
     public void onAuthSuccess() {
         // TODO: OPEN HOME SCREEN
         Snackbar.make(txtEmail,"Open Home Screen",Snackbar.LENGTH_LONG).show();
     }
 
     @Override
-    public void showError(String message) {
-        Snackbar.make(txtEmail,message,Snackbar.LENGTH_LONG).show();
+    public void showError(int messageId) {
+        Snackbar.make(txtEmail,getString(messageId),Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -76,10 +81,11 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     @OnClick(R.id.btn_login)
     void loginClicked(View loginButton){
 
-        if(appHelper.validateRequiredFields(txtEmail, txtPassword)) {
+        if(appHelper.validateRequiredFields(txtEmail, txtPassword)
+                && appHelper.validateEmail(txtEmail)) {
+
             String email = txtEmail.getEditText().getText().toString();
             String password = txtPassword.getEditText().getText().toString();
-
             presenter.loginUserWithEmailAndPassword(email, password);
         }
     }
