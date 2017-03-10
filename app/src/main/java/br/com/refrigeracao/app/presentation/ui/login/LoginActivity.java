@@ -36,13 +36,15 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
+        //TODO: USER DAGGER
         // binding
         ButterKnife.bind(this);
         presenter = new LoginPresenter(this);
         presenter.setView(this);
         appHelper = new AppHelper(this);
 
-        // TODO: remove bellow code for testing
+        // TODO: remove bellow code used for testing
         txtEmail.getEditText().setText("new@user.com");
         txtPassword.getEditText().setText("New12345");
 
