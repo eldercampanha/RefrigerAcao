@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.app.refrigeracao.R;
 import com.bumptech.glide.Glide;
 
+import javax.inject.Inject;
+
 import br.com.refrigeracao.app.presentation.base.BaseActivity;
 import br.com.refrigeracao.app.presentation.helper.CropCircleTransform;
 import butterknife.BindView;
@@ -27,7 +29,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     TextView txtUserName;
     @BindView(R.id.profile_img)
     ImageView imgUserPicture;
-    private HomePresenter presenter;
+    @Inject HomeContract.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +37,8 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         setContentView(R.layout.activity_home);
 
         ButterKnife.bind(this);
+        getMyAppliation().getDaggerUiComponent().inject(this);
 
-        presenter = new HomePresenter();
         presenter.setView(this);
     }
 
