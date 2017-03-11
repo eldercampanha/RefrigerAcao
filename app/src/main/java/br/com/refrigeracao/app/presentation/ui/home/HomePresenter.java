@@ -23,10 +23,11 @@ public class HomePresenter implements HomeContract.Presenter{
     private User mUser;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
-    private Context mContext;
 
     public HomePresenter(){
-
+        // TODO: USE DAGGER
+        // TODO: SETUP AUTH LISTENER
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -67,7 +68,8 @@ public class HomePresenter implements HomeContract.Presenter{
     }
 
     @Override
-    public void loadUserPicture() {
-
+    public void sigOut() {
+        mAuth.signOut();
+        view.signOut();
     }
 }

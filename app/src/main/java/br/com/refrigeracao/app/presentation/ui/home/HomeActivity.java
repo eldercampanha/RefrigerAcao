@@ -3,6 +3,9 @@ package br.com.refrigeracao.app.presentation.ui.home;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -68,4 +71,30 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         loadingPanel.setVisibility(View.GONE);
     }
 
+    @Override
+    public void signOut() {
+        finish();
+    }
+
+    // Menu
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_home, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.logout:
+                presenter.sigOut();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }

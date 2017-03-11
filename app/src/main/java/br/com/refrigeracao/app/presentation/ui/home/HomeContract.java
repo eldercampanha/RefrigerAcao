@@ -19,6 +19,8 @@ public interface HomeContract {
         void showLoading();
 
         void hideLoading();
+
+        void signOut();
     }
 
     interface Presenter {
@@ -27,6 +29,6 @@ public interface HomeContract {
 
         void loadUser();
 
-        void loadUserPicture();
+        void sigOut();
     }
 }

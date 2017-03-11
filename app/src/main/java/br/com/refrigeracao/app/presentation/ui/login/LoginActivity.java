@@ -5,6 +5,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -18,7 +19,10 @@ import butterknife.OnClick;
 
 public class LoginActivity extends AppCompatActivity implements LoginContract.View {
 
+    // used to lock user action
+    protected boolean enabled = true;
     private LoginContract.Presenter presenter;
+    private TextViewHelper textViewHelper;
 
     @BindView(R.id.input_email)
     TextInputLayout txtEmail;
@@ -26,7 +30,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     TextInputLayout txtPassword;
     @BindView(R.id.loadingPanel)
     RelativeLayout loadingPanel;
-    private TextViewHelper textViewHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +71,30 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
     @Override
     public void showLoading() {
+        setEnableTouchEvent(false);
         loadingPanel.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoading() {
         loadingPanel.setVisibility(View.GONE);
+        setEnableTouchEvent(true);
+    }
+
+    /**
+     * This method blocks the activity interaction
+     * in order to avoid the user to click repeatedly on Login button or Text fields
+     * @param b
+     */
+    public void setEnableTouchEvent(boolean b) {
+        enabled = b;
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        return enabled ?
+                super.dispatchTouchEvent(ev) :
+                true;
     }
 
     // UI EVENTS
