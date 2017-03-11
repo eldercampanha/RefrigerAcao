@@ -15,6 +15,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.concurrent.Executor;
 
+import javax.inject.Inject;
+
 import br.com.refrigeracao.app.model.User;
 
 /**
@@ -61,7 +63,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     public void loginUserWithEmailAndPassword(String email, String password) {
         view.showLoading();
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener((Activity) mContext, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener((Activity)view, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 

@@ -11,17 +11,21 @@ import android.widget.RelativeLayout;
 
 import com.app.refrigeracao.R;
 
+import javax.inject.Inject;
+
+import br.com.refrigeracao.app.MyApplication;
+import br.com.refrigeracao.app.presentation.base.BaseActivity;
 import br.com.refrigeracao.app.presentation.helper.TextViewHelper;
 import br.com.refrigeracao.app.presentation.ui.home.HomeActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends AppCompatActivity implements LoginContract.View {
+public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     // used to lock user action
+    @Inject LoginContract.Presenter presenter;
     protected boolean enabled = true;
-    private LoginContract.Presenter presenter;
     private TextViewHelper textViewHelper;
 
     @BindView(R.id.input_email)
@@ -40,8 +44,10 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         //TODO: USER DAGGER
         // binding
         ButterKnife.bind(this);
-        presenter = new LoginPresenter(this);
+        getMyAppliation().getDaggerUiComponent().inject(this);
+
         presenter.setView(this);
+
         textViewHelper = new TextViewHelper(this);
 
         // TODO: remove bellow code used for testing

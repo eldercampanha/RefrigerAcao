@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.app.refrigeracao.R;
 
+import br.com.refrigeracao.app.MyApplication;
 import butterknife.BindView;
 
 /**
@@ -15,5 +16,8 @@ import butterknife.BindView;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
+    protected MyApplication getMyAppliation(){
+        return (MyApplication) getApplication();
+    }
 
 }
