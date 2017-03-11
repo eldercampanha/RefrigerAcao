@@ -6,6 +6,21 @@
     android:layout_height="match_parent"
     tools:context="br.com.refrigeracao.app.presentation.ui.login.LoginActivity">
 
+    <RelativeLayout
+        android:id="@+id/loadingPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:gravity="center">
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -71,22 +86,11 @@
                 android:onClick="createAccountClicked"
                 android:textSize="16dip"/>
 
+
+
         </LinearLayout>
+
     </ScrollView>
 
-    <RelativeLayout
-        android:id="@+id/loadingPanel"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:gravity="center"
-        android:visibility="gone"
-        tools:layout_editor_absoluteY="8dp"
-        tools:layout_editor_absoluteX="8dp">
-
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true" />
-    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

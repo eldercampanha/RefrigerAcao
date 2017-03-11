@@ -1,6 +1,7 @@
 package br.com.refrigeracao.app.model;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 
 /**
  * Created by elder-dell on 2017-03-10.
@@ -11,6 +12,7 @@ public class User {
     private String id;
     private String name;
     private String email;
+    private Uri photoUrl;
 
     public String getId() {
         return id;
@@ -35,4 +37,13 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public Uri getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(Uri photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
 }

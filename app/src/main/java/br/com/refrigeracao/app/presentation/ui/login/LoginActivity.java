@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.app.refrigeracao.R;
 
-import br.com.refrigeracao.app.presentation.ui.helper.AppHelper;
+import br.com.refrigeracao.app.presentation.helper.AppHelper;
 import br.com.refrigeracao.app.presentation.ui.home.HomeActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;

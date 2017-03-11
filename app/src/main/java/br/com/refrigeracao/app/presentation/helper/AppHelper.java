@@ -1,4 +1,4 @@
-package br.com.refrigeracao.app.presentation.ui.helper;
+package br.com.refrigeracao.app.presentation.helper;
 
 import android.content.Context;
 import android.support.design.widget.TextInputLayout;
