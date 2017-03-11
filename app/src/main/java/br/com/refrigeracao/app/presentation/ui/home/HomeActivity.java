@@ -9,8 +9,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.refrigeracao.R;
+import com.bumptech.glide.Glide;
 
 import br.com.refrigeracao.app.presentation.base.BaseActivity;
+import br.com.refrigeracao.app.presentation.helper.CropCircleTransform;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -45,7 +47,10 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     public void updateUserInfo(String name, Uri photoUrl) {
 
         txtUserName.setText(name);
-        //TODO: ADD GLIDE TO GRADLE
+        Glide.with(HomeActivity.this)
+                .load(photoUrl)
+                .bitmapTransform(new CropCircleTransform(HomeActivity.this))
+                .into(imgUserPicture);
     }
 
     @Override

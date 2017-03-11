@@ -15,11 +15,11 @@ import br.com.refrigeracao.app.presentation.ui.login.LoginActivity;
  * Created by elder-dell on 2017-03-10.
  */
 
-public class AppHelper {
+public class TextViewHelper {
 
     private Context mContext;
 
-    public AppHelper(Context context) {
+    public TextViewHelper(Context context) {
         mContext = context;
     }
 

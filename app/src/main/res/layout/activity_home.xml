@@ -54,7 +54,8 @@
                 android:id="@+id/lbl_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="24dp"
+                android:textSize="16dp"
                 android:layout_below="@+id/lbl_welcome"
                 android:layout_toEndOf="@+id/profile_img"
                 android:layout_toRightOf="@+id/profile_img" />

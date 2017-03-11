@@ -25,6 +25,7 @@ ext {
     supportLibVersion = '25.1.0'
     butterKnifeLibVersion = '8.4.0'
     daggerLibVersion = '2.8'
+    glidLibVersion = '3.7.0'
 }
 
 
@@ -55,6 +56,6 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-compiler:${daggerLibVersion}"
 
     // Glid for Images
-    compile 'com.github.bumptech.glide:glide:3.7.0' 
+    compile "com.github.bumptech.glide:glide:${glidLibVersion}"
 }
 

@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.app.refrigeracao.R;
 
-import br.com.refrigeracao.app.presentation.helper.AppHelper;
+import br.com.refrigeracao.app.presentation.helper.TextViewHelper;
 import br.com.refrigeracao.app.presentation.ui.home.HomeActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,7 +26,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     TextInputLayout txtPassword;
     @BindView(R.id.loadingPanel)
     RelativeLayout loadingPanel;
-    private AppHelper appHelper;
+    private TextViewHelper textViewHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         ButterKnife.bind(this);
         presenter = new LoginPresenter(this);
         presenter.setView(this);
-        appHelper = new AppHelper(this);
+        textViewHelper = new TextViewHelper(this);
 
         // TODO: remove bellow code used for testing
         txtEmail.getEditText().setText("new@user.com");
@@ -80,8 +80,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     @OnClick(R.id.btn_login)
     void loginClicked(View loginButton){
 
-        if(appHelper.validateRequiredFields(txtEmail, txtPassword)
-                && appHelper.validateEmail(txtEmail)) {
+        if(textViewHelper.validateRequiredFields(txtEmail, txtPassword)
+                && textViewHelper.validateEmail(txtEmail)) {
 
             String email = txtEmail.getEditText().getText().toString();
             String password = txtPassword.getEditText().getText().toString();
