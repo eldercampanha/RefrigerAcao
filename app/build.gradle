@@ -18,7 +18,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    // used to avoid duplicated META-INF file
+    packagingOptions {
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+    }
+
 }
+
 
 ext {
     firebaseLibVersion = '9.6.1'
@@ -46,6 +54,10 @@ dependencies {
     // Firebase
     compile "com.google.firebase:firebase-auth:${firebaseLibVersion}"
     compile "com.google.firebase:firebase-database:${firebaseLibVersion}"
+    compile 'com.firebase:firebase-client-android:2.5.2+'
+    // Firebase >> Notification
+    compile "com.google.firebase:firebase-messaging:${firebaseLibVersion}"
+    compile "com.google.firebase:firebase-analytics:${firebaseLibVersion}"
 
     //ButterKnife
     compile "com.jakewharton:butterknife:${butterKnifeLibVersion}"
