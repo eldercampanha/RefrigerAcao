@@ -1,20 +1,17 @@
 package br.com.refrigeracao.app.presentation.ui.login;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.app.refrigeracao.R;
 
 import br.com.refrigeracao.app.presentation.ui.helper.AppHelper;
+import br.com.refrigeracao.app.presentation.ui.home.HomeActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -60,8 +57,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     // PRESENTER METHODS
     @Override
     public void onAuthSuccess() {
-        // TODO: OPEN HOME SCREEN
-        Snackbar.make(txtEmail,"Open Home Screen",Snackbar.LENGTH_LONG).show();
+        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+        startActivity(intent);
     }
 
     @Override

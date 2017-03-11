@@ -20,7 +20,7 @@ android {
     }
 }
 
-ext{
+ext {
     firebaseLibVersion = '9.6.1'
     supportLibVersion = '25.1.0'
     butterKnifeLibVersion = '8.4.0'
@@ -36,8 +36,6 @@ dependencies {
 
     // Basic
     compile "com.android.support:appcompat-v7:${supportLibVersion}"
-    compile 'com.android.support.constraint:constraint-layout:1.0.1'
-    testCompile 'junit:junit:4.12'
 
     // Design
     compile "com.android.support:design:${supportLibVersion}"
@@ -54,5 +52,8 @@ dependencies {
     compile "com.google.dagger:dagger:${daggerLibVersion}"
     annotationProcessor "com.google.dagger:dagger-compiler:${daggerLibVersion}"
 
+    compile 'com.android.support.constraint:constraint-layout:1.0.1'
+    compile 'com.android.support:support-v4:25.2.0'
+    testCompile 'junit:junit:4.12'
 }
 

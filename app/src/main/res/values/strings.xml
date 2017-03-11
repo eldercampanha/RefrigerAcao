@@ -7,4 +7,9 @@
     <string name="txt_required">Required Field</string>
     <string name="valid_email">valid email id is required</string>
     <string name="loging_error">Error when trying to log in</string>
+
+    <string name="title_activity_home">Home</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="welcome">Welcome</string>
 </resources>
