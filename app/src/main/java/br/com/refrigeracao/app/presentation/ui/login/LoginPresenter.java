@@ -34,7 +34,6 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     public  LoginPresenter(Context context){
         mAuth = FirebaseAuth.getInstance();
-        mUser = new User();
         mContext = context;
     }
 
@@ -48,12 +47,13 @@ public class LoginPresenter implements LoginContract.Presenter {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
 
-            if(this.mUser == null) mUser = new User();
-
-            this.mUser.setName(user.getDisplayName());
-            this.mUser.setEmail(user.getEmail());
-            this.mUser.setId(user.getUid());
-
+            if(this.mUser == null){
+                mUser = new User(user);
+            } else {
+                this.mUser.setName(user.getDisplayName());
+                this.mUser.setEmail(user.getEmail());
+                this.mUser.setId(user.getUid());
+            }
             // load home screen
             view.onAuthSuccess();
         }

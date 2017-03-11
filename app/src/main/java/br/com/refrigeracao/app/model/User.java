@@ -3,6 +3,8 @@ package br.com.refrigeracao.app.model;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
+import com.google.firebase.auth.FirebaseUser;
+
 /**
  * Created by elder-dell on 2017-03-10.
  */
@@ -13,6 +15,13 @@ public class User {
     private String name;
     private String email;
     private Uri photoUrl;
+
+    public User(FirebaseUser user) {
+        this.id = user.getUid();
+        this.name = user.getDisplayName();
+        this.email = user.getEmail();
+        this.photoUrl = user.getPhotoUrl();
+    }
 
     public String getId() {
         return id;
