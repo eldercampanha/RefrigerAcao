@@ -1,6 +1,5 @@
 package br.com.refrigeracao.app.model;
 
-import java.security.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -10,26 +9,29 @@ import java.util.HashMap;
 
 public class Order {
 
-    private Date createdAt;
-    private int orderId;
     private String brand;
-    private String model;
     private String description;
+    private String model;
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public Order(){
+
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public Order(String brand, String description, String model) {
+        this.brand = brand;
+        this.description = description;
+        this.model = model;
     }
 
-    public int getOrderId() {
-        return orderId;
-    }
+    public HashMap<String,Object> toHashMap() {
 
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
+        HashMap<String,Object> hashMap = new HashMap<>();
+
+        hashMap.put("brand", this.getBrand());
+        hashMap.put("model", this.getModel());
+        hashMap.put("description", this.getDescription());
+
+        return hashMap;
     }
 
     public String getBrand() {
@@ -40,14 +42,6 @@ public class Order {
         this.brand = brand;
     }
 
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -56,15 +50,11 @@ public class Order {
         this.description = description;
     }
 
-    public HashMap<String,String> toHashMap() {
+    public String getModel() {
+        return model;
+    }
 
-        HashMap<String,String> hashMap = new HashMap<>();
-
-        hashMap.put("created_at",this.createdAt.toString());
-        hashMap.put("brand",this.getBrand());
-        hashMap.put("model",this.getModel());
-        hashMap.put("description",this.getDescription());
-
-        return hashMap;
+    public void setModel(String model) {
+        this.model = model;
     }
 }
