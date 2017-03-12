@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.app.refrigeracao.R;
+import com.firebase.client.FirebaseApp;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -31,7 +32,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
     private Context mContext;
-
+    FirebaseUser user;
     public  LoginPresenter(Context context){
         mAuth = FirebaseAuth.getInstance();
         mContext = context;
@@ -43,19 +44,18 @@ public class LoginPresenter implements LoginContract.Presenter {
     @Override
     public void loadStatus() {
 
+        user = FirebaseAuth.getInstance().getCurrentUser();
         // TODO: SET UP A USER TO DAGGER
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-
             if(this.mUser == null){
                 mUser = new User(user);
             } else {
                 this.mUser.setName(user.getDisplayName());
                 this.mUser.setEmail(user.getEmail());
                 this.mUser.setId(user.getUid());
+                // load home screen
+                view.onAuthSuccess();
             }
-            // load home screen
-            view.onAuthSuccess();
         }
     }
 
@@ -68,12 +68,14 @@ public class LoginPresenter implements LoginContract.Presenter {
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                         Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
-                        view.onAuthSuccess();
+
+                        if(isLoggedIn())
+                            view.onAuthSuccess();
+
                         if (!task.isSuccessful()) {
                             view.showError(R.string.loging_error);
                         }
                         view.hideLoading();
-
                     }
                 });
     }
@@ -84,8 +86,7 @@ public class LoginPresenter implements LoginContract.Presenter {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
+                if (isLoggedIn()) {
                     // User is signed in
                     view.onAuthSuccess();
                 } else {
@@ -98,6 +99,10 @@ public class LoginPresenter implements LoginContract.Presenter {
     public void removeAuthStateListener(){
         if (mAuthListener != null)
             mAuth.removeAuthStateListener(mAuthListener);
+    }
+
+    public boolean isLoggedIn(){
+        return FirebaseAuth.getInstance().getCurrentUser() != null;
     }
 
 }
