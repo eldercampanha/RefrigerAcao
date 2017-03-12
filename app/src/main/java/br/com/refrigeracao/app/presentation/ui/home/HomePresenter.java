@@ -43,16 +43,13 @@ public class HomePresenter implements HomeContract.Presenter{
         // TODO: SET UP A USER TO DAGGER
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            if(this.mUser == null) mUser = new User();
-            this.mUser.setName(user.getDisplayName());
-            this.mUser.setEmail(user.getEmail());
-            this.mUser.setPhotoUrl(user.getPhotoUrl());
-            this.mUser.setId(user.getUid());
+            if(this.mUser == null) mUser = new User(user);
 
             //TODO: REMVOVE THE BELOW CODE USED FOR TESTING
             String name ="Mr.Bean";
             Uri photoUrl = Uri.parse("https://files.incrivel.club/files/news/part_17/174910/3144810-58c75097b408eb88104a66dbb58eda09-1480946976-650-367728d9ce-1481678356.jpg");
             if(mUser.getName() == null){
+
                 // Updating user display name and photo
                     UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                             .setDisplayName(name)

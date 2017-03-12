@@ -3,6 +3,8 @@ package br.com.refrigeracao.app.presentation.ui.home;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,15 +16,27 @@ import android.widget.TextView;
 import com.app.refrigeracao.R;
 import com.bumptech.glide.Glide;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+
 import javax.inject.Inject;
 
+import br.com.refrigeracao.app.model.Order;
+import br.com.refrigeracao.app.model.User;
 import br.com.refrigeracao.app.presentation.base.BaseActivity;
 import br.com.refrigeracao.app.presentation.helper.CropCircleTransform;
+import br.com.refrigeracao.app.presentation.ui.home.viewholder.OrderViewHolder;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class HomeActivity extends BaseActivity implements HomeContract.View {
 
+    @BindView(R.id.recycler_view)
+    RecyclerView recycler;
     @BindView(R.id.loadingPanel)
     RelativeLayout loadingPanel;
     @BindView(R.id.lbl_name)
@@ -31,6 +45,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     ImageView imgUserPicture;
     @Inject HomeContract.Presenter presenter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,8 +53,33 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
 
         ButterKnife.bind(this);
         getMyAppliation().getDaggerUiComponent().inject(this);
+        initFirebaseRecyclerView();
 
         presenter.setView(this);
+
+
+    }
+
+    private void initFirebaseRecyclerView() {
+
+        recycler.setHasFixedSize(true);
+        recycler.setLayoutManager(new LinearLayoutManager(this));
+
+        //TODO: MANAGE THE BELLOW CODE TO BE IN A DIFFERENT FILE
+        // url from firebase console / ur project / database
+        String databaseUrl = "https://refrigeracao-5eb36.firebaseio.com/";//Users/"+id+"/Orders/";
+        DatabaseReference mRef = FirebaseDatabase.getInstance().getReferenceFromUrl(databaseUrl);
+        DatabaseReference child = mRef.child("Order");
+
+        recycler.setAdapter(new FirebaseRecyclerAdapter<Order, OrderViewHolder>(Order.class, R.layout.cell_home_lstview, OrderViewHolder.class, mRef) {
+            @Override
+            protected void populateViewHolder(OrderViewHolder viewHolder, Order model, int position) {
+                viewHolder.setBrand(model.getBrand());
+                viewHolder.setModel(model.getModel());
+                viewHolder.setDescription(model.getDescription());
+            }
+        });
+
     }
 
     @Override
@@ -78,8 +118,59 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         finish();
     }
 
-    // Menu
 
+    // test
+
+    @OnClick(R.id.test)
+    public void testClicked(View view){
+
+
+        User mUser = new User(FirebaseAuth.getInstance().getCurrentUser());
+
+        // creating fake Order
+        Order order = new Order();
+        order.setBrand("Brastemp");
+        order.setModel("Super");
+        order.setDescription("Nao joga agua fora");
+
+        String id = mUser.getId();
+
+
+/*
+        //OLD WAY
+        // creating connection
+         Firebase mRef = new Firebase(databaseUrl);
+
+        // creating Hashmap
+        HashMap<String,Object> hashMap = order.toHashMap();
+        mRef.setValue(hashMap);
+/* run value example
+        // creating child
+        final Firebase mRefChild = mRef.child("Name");
+        mRefChild.setValue("Bruno");
+
+
+        // adding listener
+        mRefChild.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                txtUserName.setText(dataSnapshot.getValue(String.class));
+
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+*/
+
+
+
+    }
+
+    // Menu
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
