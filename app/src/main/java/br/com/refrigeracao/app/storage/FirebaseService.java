@@ -1,19 +1,16 @@
 package br.com.refrigeracao.app.storage;
 
-import android.util.Log;
-
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import br.com.refrigeracao.app.model.Order;
-import br.com.refrigeracao.app.presentation.ui.login.LoginActivity;
-import br.com.refrigeracao.app.storage.firebaseinteface.FirebaseInterface;
+import br.com.refrigeracao.app.model.User;
+import br.com.refrigeracao.app.storage.firebaseinterface.FirebaseInterface;
 
 /**
  * Created by elder on 2017-04-15.
@@ -21,13 +18,10 @@ import br.com.refrigeracao.app.storage.firebaseinteface.FirebaseInterface;
 
 public class FirebaseService {
 
-    private final static String BASE_URL = "https://refrigeracao-5eb36.firebaseio.com";
-    private  static DatabaseReference mRef;
-
-    public static void getOrders(final FirebaseInterface.Orders inteface){
+    public static void getOrders(final FirebaseInterface.Orders ordersInterface){
 
         final ArrayList<Order> orders = new ArrayList<>();
-        mRef = FirebaseDatabase.getInstance().getReference("/Order");
+        DatabaseReference mRef = FirebaseHelper.getDatabaseReference("/orders");
 
         mRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -38,18 +32,41 @@ public class FirebaseService {
                         order.setKey(orderSnapshot.getKey());
                     orders.add(order);
                 }
-                inteface.onSuccess(orders);
+                ordersInterface.onSuccess(orders);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-               inteface.onFail(databaseError.toString());
+               ordersInterface.onFail(databaseError.toString());
             }
         });
 
     }
 
-    public static void getSingleOrder(){
+
+    public static void getSingleOrder(final String orderKey, final FirebaseInterface.SingleOrder singleOrderInterface){
+        DatabaseReference mRef = FirebaseHelper.getDatabaseReference("/orders");
+        mRef.child(orderKey).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Order order = (Order)dataSnapshot.getValue(Order.class);
+                if(order!=null)
+                    singleOrderInterface.sucess(order);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                singleOrderInterface.fail(databaseError.toString());
+            }
+        });
+
+    }
+
+    public static void createOrder(final Order order, final FirebaseInterface.CreateOrder createOrderInterface){
+
+        DatabaseReference mRef = FirebaseHelper.getDatabaseReference("/orders");
+        order.setKey(mRef.push().getKey());
+        mRef.child(order.getKey()).setValue(order);
 
     }
 

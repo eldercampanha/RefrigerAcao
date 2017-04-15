@@ -1,5 +1,6 @@
 package br.com.refrigeracao.app.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -7,15 +8,10 @@ import java.util.HashMap;
  * Created by elder-dell on 2017-03-11.
  */
 
-public class Order {
+public class Order implements Serializable {
 
-    public String getKey() {
-        return key;
-    }
 
-    public void setKey(String key) {
-        this.key = key;
-    }
+    private static final long serialVersionUID = -5179036813371869616L;
 
     private String key;
     private String brand;
@@ -26,10 +22,11 @@ public class Order {
 
     }
 
-    public Order(String brand, String description, String model) {
+    public Order(String brand, String description, String model, String key) {
         this.brand = brand;
         this.description = description;
         this.model = model;
+        this.key = key;
     }
 
     public HashMap<String,Object> toHashMap() {
@@ -66,4 +63,13 @@ public class Order {
     public void setModel(String model) {
         this.model = model;
     }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
 }

@@ -1,11 +1,11 @@
 package br.com.refrigeracao.app.presentation.ui.home;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.refrigeracao.R;
 import com.bumptech.glide.Glide;
@@ -20,10 +21,7 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
-
-import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -32,8 +30,10 @@ import br.com.refrigeracao.app.model.User;
 import br.com.refrigeracao.app.presentation.base.BaseActivity;
 import br.com.refrigeracao.app.presentation.helper.CropCircleTransform;
 import br.com.refrigeracao.app.presentation.ui.home.viewholder.OrderViewHolder;
+import br.com.refrigeracao.app.presentation.ui.orderdetails.OrderDetailsActivity;
 import br.com.refrigeracao.app.storage.FirebaseService;
-import br.com.refrigeracao.app.storage.firebaseinteface.FirebaseInterface;
+import br.com.refrigeracao.app.storage.FirebaseHelper;
+import br.com.refrigeracao.app.storage.firebaseinterface.FirebaseInterface;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -49,7 +49,6 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     @BindView(R.id.profile_img)
     ImageView imgUserPicture;
     @Inject HomeContract.Presenter presenter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,15 +66,28 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
 
         recycler.setHasFixedSize(true);
         recycler.setLayoutManager(new LinearLayoutManager(this));
-        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("/Order");
+        DatabaseReference mRef = FirebaseHelper.getDatabaseReference("/orders");
 
         recycler.setAdapter(new FirebaseRecyclerAdapter<Order, OrderViewHolder>(Order.class, R.layout.home_orders_simple_item, OrderViewHolder.class, mRef) {
+
             @Override
-            protected void populateViewHolder(OrderViewHolder viewHolder, Order model, int position) {
+            protected void populateViewHolder(OrderViewHolder viewHolder, final Order model, int position) {
                 viewHolder.setBrand(model.getBrand());
                 viewHolder.setModel(model.getModel());
                 viewHolder.setDescription(model.getDescription());
+
+                viewHolder.setOnClickListenner(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        // show order details
+                        Intent intent = new Intent(HomeActivity.this, OrderDetailsActivity.class);
+                        intent.putExtra("ORDER",model);
+                        startActivity(intent);
+                    }
+                });
             }
+
         });
 
     }
@@ -133,7 +145,17 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
 
         String id = mUser.getId();
 
+        FirebaseService.createOrder(order, new FirebaseInterface.CreateOrder() {
+            @Override
+            public void sucess(String orderId) {
+                Toast.makeText(HomeActivity.this, "Success", Toast.LENGTH_LONG).show();
+            }
 
+            @Override
+            public void fail(String error) {
+                Toast.makeText(HomeActivity.this,"error", Toast.LENGTH_LONG).show();
+            }
+        });
 /*
         //OLD WAY
         // creating connection
@@ -142,7 +164,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         // creating Hashmap
         HashMap<String,Object> hashMap = order.toHashMap();
         mRef.setValue(hashMap);
-/* run value example
+/* run value  example
         // creating child
         final Firebase mRefChild = mRef.child("Name");
         mRefChild.setValue("Bruno");

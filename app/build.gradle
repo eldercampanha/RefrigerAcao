@@ -61,7 +61,8 @@ dependencies {
     compile "com.google.firebase:firebase-analytics:${firebaseLibVersion}"
     // Newest Firebase UI features
     compile 'com.firebaseui:firebase-ui:0.4.3'
-
+    // Firebase Upload Images
+    compile "com.google.firebase:firebase-storage:${firebaseLibVersion}"
 
     //ButterKnife
     compile "com.jakewharton:butterknife:${butterKnifeLibVersion}"
