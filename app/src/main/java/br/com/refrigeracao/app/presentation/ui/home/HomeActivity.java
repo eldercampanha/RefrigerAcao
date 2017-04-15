@@ -5,6 +5,7 @@ import android.support.design.widget.Snackbar;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,6 +23,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 
 import br.com.refrigeracao.app.model.Order;
@@ -29,6 +32,8 @@ import br.com.refrigeracao.app.model.User;
 import br.com.refrigeracao.app.presentation.base.BaseActivity;
 import br.com.refrigeracao.app.presentation.helper.CropCircleTransform;
 import br.com.refrigeracao.app.presentation.ui.home.viewholder.OrderViewHolder;
+import br.com.refrigeracao.app.storage.FirebaseService;
+import br.com.refrigeracao.app.storage.firebaseinteface.FirebaseInterface;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -56,22 +61,15 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         initFirebaseRecyclerView();
 
         presenter.setView(this);
-
-
     }
 
     private void initFirebaseRecyclerView() {
 
         recycler.setHasFixedSize(true);
         recycler.setLayoutManager(new LinearLayoutManager(this));
+        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("/Order");
 
-        //TODO: MANAGE THE BELLOW CODE TO BE IN A DIFFERENT FILE
-        // url from firebase console / ur project / database
-        String databaseUrl = "https://refrigeracao-5eb36.firebaseio.com/";//Users/"+id+"/Orders/";
-        DatabaseReference mRef = FirebaseDatabase.getInstance().getReferenceFromUrl(databaseUrl);
-        DatabaseReference child = mRef.child("Order");
-
-        recycler.setAdapter(new FirebaseRecyclerAdapter<Order, OrderViewHolder>(Order.class, R.layout.cell_home_lstview, OrderViewHolder.class, mRef) {
+        recycler.setAdapter(new FirebaseRecyclerAdapter<Order, OrderViewHolder>(Order.class, R.layout.home_orders_simple_item, OrderViewHolder.class, mRef) {
             @Override
             protected void populateViewHolder(OrderViewHolder viewHolder, Order model, int position) {
                 viewHolder.setBrand(model.getBrand());

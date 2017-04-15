@@ -9,6 +9,15 @@ import java.util.HashMap;
 
 public class Order {
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    private String key;
     private String brand;
     private String description;
     private String model;
