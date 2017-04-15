@@ -39,23 +39,20 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
     @Override
-    public void setView(LoginContract.View view) { this.view = view;  }
+    public void setView(LoginContract.View view) {
+        this.view = view;
+        addAuthStateListener();
+    }
 
     @Override
     public void loadStatus() {
 
-        user = FirebaseAuth.getInstance().getCurrentUser();
         // TODO: SET UP A USER TO DAGGER
+        user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            if(this.mUser == null){
                 mUser = new User(user);
-            } else {
-                this.mUser.setName(user.getDisplayName());
-                this.mUser.setEmail(user.getEmail());
-                this.mUser.setId(user.getUid());
                 // load home screen
                 view.onAuthSuccess();
-            }
         }
     }
 

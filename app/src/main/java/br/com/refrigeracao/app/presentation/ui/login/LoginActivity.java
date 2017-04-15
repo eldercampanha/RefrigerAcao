@@ -90,10 +90,10 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     /**
      * This method blocks the activity interaction
      * in order to avoid the user to click repeatedly on Login button or Text fields
-     * @param b
+     * @param enable
      */
-    public void setEnableTouchEvent(boolean b) {
-        enabled = b;
+    public void setEnableTouchEvent(boolean enable) {
+        enabled = enable;
     }
 
     @Override
