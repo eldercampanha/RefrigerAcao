@@ -5,5 +5,7 @@
 /.idea/libraries
 .DS_Store
 /build
+.FirebaseService.java
+.FirebaseHelper.java
 /captures
 .externalNativeBuild
