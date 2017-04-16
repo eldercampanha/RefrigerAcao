@@ -1,4 +1,6 @@
-package br.com.refrigeracao.app.storage.firebaseinterface;
+package br.com.refrigeracao.app.storage.firebase;
+
+import android.net.Uri;
 
 import java.util.ArrayList;
 
@@ -23,6 +25,11 @@ public interface FirebaseInterface {
     interface CreateOrder{
         void sucess(String orderId);
         void fail(String error);
-
     }
+
+    interface DownloadImage{
+        void success(Uri uri);
+        void fail (String error);
+    }
+
 }

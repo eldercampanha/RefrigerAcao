@@ -14,6 +14,7 @@ public class Order implements Serializable {
     private static final long serialVersionUID = -5179036813371869616L;
 
     private String key;
+    private String imageName;
     private String brand;
     private String description;
     private String model;
@@ -22,11 +23,12 @@ public class Order implements Serializable {
 
     }
 
-    public Order(String brand, String description, String model, String key) {
+    public Order(String brand, String description, String model, String key, String imageName) {
         this.brand = brand;
         this.description = description;
         this.model = model;
         this.key = key;
+        this.imageName = imageName;
     }
 
     public HashMap<String,Object> toHashMap() {
@@ -72,4 +74,11 @@ public class Order implements Serializable {
         this.key = key;
     }
 
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
 }

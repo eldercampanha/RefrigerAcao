@@ -74,5 +74,9 @@ dependencies {
 
     // Glid for Images
     compile "com.github.bumptech.glide:glide:${glidLibVersion}"
+
+    // Picasso for Images(check if it is better than Glid)
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
 }
 

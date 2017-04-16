@@ -1,4 +1,4 @@
-package br.com.refrigeracao.app.storage;
+package br.com.refrigeracao.app.storage.firebase;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -7,7 +7,6 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -19,10 +18,6 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import br.com.refrigeracao.app.model.Order;
-import br.com.refrigeracao.app.model.User;
-import br.com.refrigeracao.app.storage.firebaseinterface.FirebaseInterface;
-
-import static com.facebook.GraphRequest.TAG;
 
 /**
  * Created by elder on 2017-04-15.
@@ -85,10 +80,15 @@ public class FirebaseService {
 
     }
 
-    public static void uploadImage(Bitmap bitmap, String orderKey) {
+    public static void updateOrder(final Order order){
+        DatabaseReference mRef = FirebaseHelper.getDatabaseReference("/orders");
+        mRef.child(order.getKey()).setValue(order);
+    }
 
-        StorageReference mRef = FirebaseHelper.getStorageReference("test");
-        mRef.child(orderKey);
+    public static void uploadImage(Bitmap bitmap, String imageName) {
+
+        StorageReference mRef = FirebaseHelper.getStorageReference(imageName);
+        mRef.child(imageName);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -107,6 +107,23 @@ public class FirebaseService {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                 Log.i(TAG, downloadUrl.toString());
+            }
+        });
+    }
+
+    public static void downloadImage(String imageName, final FirebaseInterface.DownloadImage downloadImageInterface){
+
+        StorageReference mRef = FirebaseHelper.getStorageReference(imageName);
+
+        mRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                downloadImageInterface.success(uri);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
             }
         });
     }

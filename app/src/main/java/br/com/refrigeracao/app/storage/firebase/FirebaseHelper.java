@@ -1,4 +1,4 @@
-package br.com.refrigeracao.app.storage;
+package br.com.refrigeracao.app.storage.firebase;
 
 import android.renderscript.Short4;
 
