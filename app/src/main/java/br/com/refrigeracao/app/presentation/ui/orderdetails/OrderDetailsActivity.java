@@ -104,7 +104,13 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 if(reducedSizeBitmap != null){
                     imageview.setImageBitmap(reducedSizeBitmap);
 
-                    FirebaseService.uploadImage(reducedSizeBitmap,mOrder.getKey());
+                    //TODO: Add to ImageHelper
+                    // Get the data from an ImageView as bytes
+                    imageview.setDrawingCacheEnabled(true);
+                    imageview.buildDrawingCache();
+                    Bitmap bitmap = imageview.getDrawingCache();
+
+                    FirebaseService.uploadImage(bitmap,mOrder.getKey());
                 }else{
                     Toast.makeText(this,"Error while capturing Image",Toast.LENGTH_LONG).show();
                 }

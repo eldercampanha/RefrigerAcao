@@ -3,6 +3,7 @@ package br.com.refrigeracao.app.storage;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -21,11 +22,15 @@ import br.com.refrigeracao.app.model.Order;
 import br.com.refrigeracao.app.model.User;
 import br.com.refrigeracao.app.storage.firebaseinterface.FirebaseInterface;
 
+import static com.facebook.GraphRequest.TAG;
+
 /**
  * Created by elder on 2017-04-15.
  */
 
 public class FirebaseService {
+
+    public static final String TAG = FirebaseService.class.getSimpleName();
 
     public static void getOrders(final FirebaseInterface.Orders ordersInterface){
 
@@ -65,6 +70,7 @@ public class FirebaseService {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                Log.i(TAG, databaseError.getMessage());
                 singleOrderInterface.fail(databaseError.toString());
             }
         });
@@ -81,7 +87,7 @@ public class FirebaseService {
 
     public static void uploadImage(Bitmap bitmap, String orderKey) {
 
-        StorageReference mRef = FirebaseHelper.getStorageReference();
+        StorageReference mRef = FirebaseHelper.getStorageReference("test");
         mRef.child(orderKey);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -93,12 +99,14 @@ public class FirebaseService {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle unsuccessful uploads
+                Log.i(TAG, exception.getMessage());
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                Log.i(TAG, downloadUrl.toString());
             }
         });
     }
