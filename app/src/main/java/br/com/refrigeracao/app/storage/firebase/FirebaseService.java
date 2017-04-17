@@ -85,7 +85,7 @@ public class FirebaseService {
         mRef.child(order.getKey()).setValue(order);
     }
 
-    public static void uploadImage(Bitmap bitmap, String imageName) {
+    public static void uploadImage(Bitmap bitmap, String imageName, final FirebaseInterface.UploadImage uploadImageInterface) {
 
         StorageReference mRef = FirebaseHelper.getStorageReference(imageName);
         mRef.child(imageName);
@@ -100,6 +100,8 @@ public class FirebaseService {
             public void onFailure(@NonNull Exception exception) {
                 // Handle unsuccessful uploads
                 Log.i(TAG, exception.getMessage());
+                uploadImageInterface.fail(exception.getMessage());
+
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -107,6 +109,7 @@ public class FirebaseService {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                 Log.i(TAG, downloadUrl.toString());
+                uploadImageInterface.success(downloadUrl);
             }
         });
     }

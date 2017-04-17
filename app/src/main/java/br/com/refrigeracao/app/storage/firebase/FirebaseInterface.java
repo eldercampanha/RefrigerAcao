@@ -32,4 +32,8 @@ public interface FirebaseInterface {
         void fail (String error);
     }
 
+    interface UploadImage{
+        void success(Uri uri);
+        void fail (String error);
+    }
 }

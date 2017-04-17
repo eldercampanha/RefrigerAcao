@@ -54,6 +54,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private Uri imageUri;
     public Order mOrder;
     private String fileName;
+    private boolean isRunning;
 
 
     @Override
@@ -61,6 +62,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_details);
         ButterKnife.bind(this);
+
+        isRunning = true;
 
         mOrder = (Order) getIntent().getSerializableExtra("ORDER");
         if(mOrder != null){
@@ -70,6 +73,12 @@ public class OrderDetailsActivity extends AppCompatActivity {
             setUpFirebaseRuntime(mOrder);
         }
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        isRunning = false;
     }
 
     public void setUpFirebaseRuntime(Order order) {
@@ -140,52 +149,67 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
         chooserIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
         startActivityForResult(chooserIntent, REQUEST_IMAGE_CAPTURE);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
 
             if (imageUri != null) {
+                uploadImageToFirebase();
+                imageview.setAlpha(0.5f);
                 progressBar.setVisibility(View.VISIBLE);
-
-                // display taken picture
-                Glide.with(OrderDetailsActivity.this)
-                        .load(imageUri)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .listener(new RequestListener<Uri, GlideDrawable>() {
-                            @Override
-                            public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
-                                progressBar.setVisibility(View.GONE);
-                                return false;
-                            }
-
-                            @Override
-                            public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                                progressBar.setVisibility(View.GONE);
-
-                                Bitmap bitmap = ImageHelper.uriToBitmap(imageUri, OrderDetailsActivity.this);
-
-                                if (bitmap != null) {
-
-                                    // update order Image on Firebase
-                                    mOrder.setImageName(fileName);
-                                    FirebaseService.updateOrder(mOrder);
-                                    FirebaseService.uploadImage(bitmap, fileName);
-
-                                }
-                                return false;
-                            }
-                        })
-                        .into(imageview);
-
-
-
             } else {
                 Toast.makeText(this, "Error while capturing Image", Toast.LENGTH_LONG).show();
             }
+        }
+    }
+
+    private void uploadImageToFirebase() {
+        Bitmap bitmap = ImageHelper.uriToBitmap(imageUri, OrderDetailsActivity.this);
+
+        if (bitmap != null) {
+
+            // update order Image on Firebase
+            mOrder.setImageName(fileName);
+            FirebaseService.updateOrder(mOrder);
+            FirebaseService.uploadImage(bitmap, fileName, new FirebaseInterface.UploadImage() {
+                @Override
+                public void success(Uri uri) {
+
+                    if(!isRunning)
+                        return;
+
+                    imageview.setAlpha(1f);
+                    // display taken picture
+                    Glide.with(OrderDetailsActivity.this)
+                            .load(uri)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .listener(new RequestListener<Uri, GlideDrawable>() {
+                                @Override
+                                public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                    progressBar.setVisibility(View.GONE);
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                    progressBar.setVisibility(View.GONE);
+                                    return false;
+                                }
+                            })
+                            .into(imageview);
+
+                }
+
+                @Override
+                public void fail(String error) {
+
+                }
+            });
+
         }
     }
 }
