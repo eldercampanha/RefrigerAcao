@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/authui_colorPrimary"
     android:layout_height="match_parent"
     tools:context="br.com.refrigeracao.app.presentation.ui.createorder.CreateOrderActivity">
 
@@ -53,7 +52,6 @@
                     android:layout_marginTop="8dp">
 
                     <EditText
-                        android:background="#FFF"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/brand"
@@ -70,7 +68,6 @@
                     android:layout_marginTop="8dp">
 
                     <EditText
-                        android:background="#FFF"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/modelo"
@@ -78,7 +75,6 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <TextView
-                    android:textColor="#FFF"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:layout_marginTop="8dp"
@@ -89,8 +85,10 @@
                     android:text="@string/description_title"/>
 
                 <EditText
-                    android:background="#FFF"
+                    android:id="@+id/input_description"
+                    android:inputType="textMultiLine"                     android:background="#FFF"
                     android:elevation="2dp"
+                    android:gravity="top"
                     android:layout_below="@id/lbl_description_title"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"

@@ -29,6 +29,7 @@ import br.com.refrigeracao.app.model.Order;
 import br.com.refrigeracao.app.model.User;
 import br.com.refrigeracao.app.presentation.base.BaseActivity;
 import br.com.refrigeracao.app.presentation.helper.CropCircleTransform;
+import br.com.refrigeracao.app.presentation.ui.createorder.CreateOrderActivity;
 import br.com.refrigeracao.app.presentation.ui.home.viewholder.OrderViewHolder;
 import br.com.refrigeracao.app.presentation.ui.orderdetails.OrderDetailsActivity;
 import br.com.refrigeracao.app.storage.firebase.FirebaseService;
@@ -134,59 +135,8 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     @OnClick(R.id.test)
     public void testClicked(View view){
 
-
-        User mUser = new User(FirebaseAuth.getInstance().getCurrentUser());
-
-        // creating fake Order
-        Order order = new Order();
-        order.setBrand("Brastemp");
-        order.setModel("Super");
-        order.setDescription("Nao joga agua fora");
-
-        String id = mUser.getId();
-
-        FirebaseService.createOrder(order, new FirebaseInterface.CreateOrder() {
-            @Override
-            public void sucess(String orderId) {
-                Toast.makeText(HomeActivity.this, "Success", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void fail(String error) {
-                Toast.makeText(HomeActivity.this,"error", Toast.LENGTH_LONG).show();
-            }
-        });
-/*
-        //OLD WAY
-        // creating connection
-         Firebase mRef = new Firebase(databaseUrl);
-
-        // creating Hashmap
-        HashMap<String,Object> hashMap = order.toHashMap();
-        mRef.setValue(hashMap);
-/* run value  example
-        // creating child
-        final Firebase mRefChild = mRef.child("Name");
-        mRefChild.setValue("Bruno");
-
-
-        // adding listener
-        mRefChild.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                txtUserName.setText(dataSnapshot.getValue(String.class));
-
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-*/
-
-
+        Intent intent = new Intent(HomeActivity.this, CreateOrderActivity.class);
+        startActivity(intent);
 
     }
 

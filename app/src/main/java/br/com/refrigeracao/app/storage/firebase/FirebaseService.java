@@ -5,8 +5,10 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -76,7 +78,15 @@ public class FirebaseService {
 
         DatabaseReference mRef = FirebaseHelper.getDatabaseReference("/orders");
         order.setKey(mRef.push().getKey());
-        mRef.child(order.getKey()).setValue(order);
+        mRef.child(order.getKey()).setValue(order).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful())
+                    createOrderInterface.sucess(order.getKey());
+                else
+                    createOrderInterface.fail(task.getException().getMessage());
+            }
+        });
 
     }
 
