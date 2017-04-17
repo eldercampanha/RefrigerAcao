@@ -123,7 +123,7 @@ public class FirebaseService {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
+                downloadImageInterface.fail(exception.getMessage());
             }
         });
     }

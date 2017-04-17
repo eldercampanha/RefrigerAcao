@@ -67,8 +67,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
             txtBrand.setText(mOrder.getBrand());
             txtModel.setText(mOrder.getModel());
             txtDescription.setText(mOrder.getDescription());
+            setUpFirebaseRuntime(mOrder);
         }
-        setUpFirebaseRuntime(mOrder);
 
     }
 
@@ -84,32 +84,39 @@ public class OrderDetailsActivity extends AppCompatActivity {
                     txtModel.setText(order.getModel());
                     txtDescription.setText(order.getDescription());
 
-                    FirebaseService.downloadImage(order.getImageName(), new FirebaseInterface.DownloadImage() {
-                        @Override
-                        public void success(Uri uri) {
-                            Glide.with(OrderDetailsActivity.this).load(uri)
-                                    .listener(new RequestListener<Uri, GlideDrawable>() {
-                                        @Override
-                                        public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
-                                            progressBar.setVisibility(View.GONE);
-                                            return false;
-                                        }
-
-                                        @Override
-                                        public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                                            progressBar.setVisibility(View.GONE);
-                                            return false;
-                                        }
-                                    })
-                                    .into(imageview);
-                        }
-
-                        @Override
-                        public void fail(String error) {
-
-                        }
-                    });
+                    if (order.getImageName() != null) {
+                        loadImage(order);
+                    }
                 }
+            }
+
+            @Override
+            public void fail(String error) {
+
+            }
+        });
+    }
+
+    private void loadImage(Order order) {
+
+        FirebaseService.downloadImage(order.getImageName(), new FirebaseInterface.DownloadImage() {
+            @Override
+            public void success(Uri uri) {
+                Glide.with(OrderDetailsActivity.this).load(uri)
+                        .listener(new RequestListener<Uri, GlideDrawable>() {
+                            @Override
+                            public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                progressBar.setVisibility(View.GONE);
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                progressBar.setVisibility(View.GONE);
+                                return false;
+                            }
+                        })
+                        .into(imageview);
             }
 
             @Override
@@ -127,7 +134,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         Intent chooserIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         // create a path to save the image
-        fileName = mOrder.getKey() + (new Date().toString()) +".jpg";
+        fileName = mOrder.getKey() +".jpg";
         File f = new File(Environment.getExternalStorageDirectory(), fileName);
         imageUri = Uri.fromFile(f);
 
@@ -147,6 +154,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 // display taken picture
                 Glide.with(OrderDetailsActivity.this)
                         .load(imageUri)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .listener(new RequestListener<Uri, GlideDrawable>() {
                             @Override
                             public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -157,24 +165,23 @@ public class OrderDetailsActivity extends AppCompatActivity {
                             @Override
                             public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                                 progressBar.setVisibility(View.GONE);
+
+                                Bitmap bitmap = ImageHelper.uriToBitmap(imageUri, OrderDetailsActivity.this);
+
+                                if (bitmap != null) {
+
+                                    // update order Image on Firebase
+                                    mOrder.setImageName(fileName);
+                                    FirebaseService.updateOrder(mOrder);
+                                    FirebaseService.uploadImage(bitmap, fileName);
+
+                                }
                                 return false;
                             }
                         })
                         .into(imageview);
 
 
-                Bitmap bitmap = ImageHelper.uriToBitmap(imageUri, this);
-
-                if (bitmap != null) {
-
-                    // update order Image on Firebase
-                    mOrder.setImageName(fileName);
-                    FirebaseService.updateOrder(mOrder);
-                    FirebaseService.uploadImage(bitmap, fileName);
-
-                } else {
-                    Toast.makeText(this, "Error while capturing Image", Toast.LENGTH_LONG).show();
-                }
 
             } else {
                 Toast.makeText(this, "Error while capturing Image", Toast.LENGTH_LONG).show();
