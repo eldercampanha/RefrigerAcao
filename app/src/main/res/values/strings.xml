@@ -14,4 +14,7 @@
     <string name="welcome">Welcome</string>
     <string name="save">SAVE</string>
     <string name="logout">LOG OUT</string>
+    <string name="brand">Marca(Ex. Brastemp)</string>
+    <string name="modelo">Modelo (Ex. BWS15AB 15kg)</string>
+    <string name="description_title">O que está acontencendo?</string>
 </resources>
