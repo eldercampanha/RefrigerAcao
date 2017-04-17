@@ -8,12 +8,10 @@
 
     <RelativeLayout
         android:id="@+id/loadingPanel"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:visibility="gone"
-        android:gravity="center"
-        tools:layout_editor_absoluteY="8dp"
-        tools:layout_editor_absoluteX="8dp">
+        android:gravity="center">
 
         <ProgressBar
             style="?android:attr/progressBarStyleLarge"
@@ -27,9 +25,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="0dp">
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -62,7 +58,8 @@
                 android:layout_below="@+id/lbl_welcome"
                 android:layout_toEndOf="@+id/profile_img"
                 android:layout_alignLeft="@+id/lbl_welcome"
-                android:layout_alignStart="@+id/lbl_welcome" />
+                android:layout_alignStart="@+id/lbl_welcome"
+                android:layout_toRightOf="@+id/profile_img" />
 
         </RelativeLayout>
 
