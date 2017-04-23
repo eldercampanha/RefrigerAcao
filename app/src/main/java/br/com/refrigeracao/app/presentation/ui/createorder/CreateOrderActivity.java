@@ -63,6 +63,7 @@ public class CreateOrderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_order);
         ButterKnife.bind(this);
+
     }
 
     @Override
