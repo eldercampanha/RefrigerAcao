@@ -6,20 +6,25 @@ import android.text.TextUtils;
 import android.widget.EditText;
 
 import com.app.refrigeracao.R;
+import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.util.regex.Pattern;
 
+import br.com.jansenfelipe.androidmask.MaskEditTextChangedListener;
 import br.com.refrigeracao.app.presentation.ui.login.LoginActivity;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 /**
  * Created by elder-dell on 2017-03-10.
  */
 
-public class TextViewHelper {
+public class EditTextHelper {
 
-    private Context mContext;
+    private static Context mContext;
 
-    public TextViewHelper(Context context) {
+    public EditTextHelper(Context context) {
         mContext = context;
     }
 
@@ -67,5 +72,39 @@ public class TextViewHelper {
         }
 
         return isValid;
+    }
+
+    /**
+     * This method does the field verification in text-change-event within using RX.
+     *
+     * P.S. - empty fields are not considered wrong
+     *
+     * @param textInputLayout component that contains the EditText that will be validated
+     * @param mask #### #### #### ####
+     * @param regex ^(4[0-9]{3}) [0-9]{4} [0-9]{4} [0-9]{4}
+     */
+    public static void addVerificationWithFormat(TextInputLayout textInputLayout, String mask, String regex, String regexMessage){
+
+        // access EditText
+        EditText editText = textInputLayout.getEditText();
+
+        // add mask to EditText
+        if(mask != null)
+            editText.addTextChangedListener(new MaskEditTextChangedListener(mask, editText));
+
+        RxTextView.textChanges(editText).map(new Function<CharSequence, Boolean>() {
+            @Override
+            public Boolean apply(@NonNull CharSequence charSequence) throws Exception {
+                return charSequence.length() == 0 ||
+                        editText.getText().toString().trim().matches(regex);
+            }
+        }).distinctUntilChanged().subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(@NonNull Boolean valid) throws Exception {
+                textInputLayout.setError(regexMessage);
+                textInputLayout.setErrorEnabled(!valid);
+            }
+        });
+
     }
 }
