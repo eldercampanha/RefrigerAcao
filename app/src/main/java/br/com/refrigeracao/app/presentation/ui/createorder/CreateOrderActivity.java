@@ -25,11 +25,13 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.io.File;
 
 import br.com.refrigeracao.app.model.Order;
 import br.com.refrigeracao.app.presentation.helper.ImageHelper;
+import br.com.refrigeracao.app.presentation.helper.Regex;
 import br.com.refrigeracao.app.presentation.ui.orderdetails.OrderDetailsActivity;
 import br.com.refrigeracao.app.storage.firebase.FirebaseInterface;
 import br.com.refrigeracao.app.storage.firebase.FirebaseService;
@@ -37,6 +39,9 @@ import br.com.refrigeracao.app.util.PermissionUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 public class CreateOrderActivity extends AppCompatActivity {
 
@@ -64,6 +69,18 @@ public class CreateOrderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_order);
         ButterKnife.bind(this);
 
+        RxTextView.textChanges(model.getEditText()).map(new Function<CharSequence, Boolean>() {
+            @Override
+            public Boolean apply(@NonNull CharSequence charSequence) throws Exception {
+                return charSequence.length() == 0 || charSequence.toString().toString().matches(Regex.CREDIT_CARD_NUMBER_FORMATED);
+            }
+        }).distinctUntilChanged().subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(@NonNull Boolean valid) throws Exception {
+                model.setError("Required Field");
+                model.setErrorEnabled(!valid);
+            }
+        });
     }
 
     @Override
