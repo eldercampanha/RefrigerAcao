@@ -101,7 +101,9 @@ public class FirebaseService {
         mRef.child(imageName);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
+        // reduce image size before upload
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
         byte[] data = baos.toByteArray();
 
         UploadTask uploadTask = mRef.putBytes(data);

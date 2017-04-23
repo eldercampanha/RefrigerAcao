@@ -1,10 +1,9 @@
 package br.com.refrigeracao.app.presentation.ui.login;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -13,9 +12,8 @@ import com.app.refrigeracao.R;
 
 import javax.inject.Inject;
 
-import br.com.refrigeracao.app.MyApplication;
 import br.com.refrigeracao.app.presentation.base.BaseActivity;
-import br.com.refrigeracao.app.presentation.helper.TextViewHelper;
+import br.com.refrigeracao.app.presentation.helper.EditTextHelper;
 import br.com.refrigeracao.app.presentation.ui.home.HomeActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,7 +24,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     // used to lock user action
     @Inject LoginContract.Presenter presenter;
     protected boolean enabled = true;
-    private TextViewHelper textViewHelper;
+    private EditTextHelper textViewHelper;
 
     @BindView(R.id.input_email)
     TextInputLayout txtEmail;
@@ -48,7 +46,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
         presenter.setView(this);
 
-        textViewHelper = new TextViewHelper(this);
+        textViewHelper = new EditTextHelper(this);
 
         // TODO: remove bellow code used for testing
         txtEmail.getEditText().setText("new@user.com");

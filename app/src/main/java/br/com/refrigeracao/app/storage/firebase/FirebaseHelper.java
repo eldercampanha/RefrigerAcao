@@ -34,7 +34,7 @@ public class FirebaseHelper {
         StorageReference storageRef = storage.getReferenceFromUrl(STORAGE_URL);
 
         // Create a reference to "mountains.jpg"
-        StorageReference mRef = storageRef.child(imageName + ".jpg");
+        StorageReference mRef = storageRef.child(imageName);
 
         // Create a reference to 'images/mountains.jpg'
         StorageReference mImagesRef = storageRef.child("images/" + imageName + ".jpg");
