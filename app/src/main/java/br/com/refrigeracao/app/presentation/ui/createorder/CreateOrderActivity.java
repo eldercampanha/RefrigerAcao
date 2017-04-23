@@ -68,19 +68,6 @@ public class CreateOrderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_order);
         ButterKnife.bind(this);
-
-        RxTextView.textChanges(model.getEditText()).map(new Function<CharSequence, Boolean>() {
-            @Override
-            public Boolean apply(@NonNull CharSequence charSequence) throws Exception {
-                return charSequence.length() == 0 || charSequence.toString().toString().matches(Regex.CREDIT_CARD_NUMBER_FORMATED);
-            }
-        }).distinctUntilChanged().subscribe(new Consumer<Boolean>() {
-            @Override
-            public void accept(@NonNull Boolean valid) throws Exception {
-                model.setError("Required Field");
-                model.setErrorEnabled(!valid);
-            }
-        });
     }
 
     @Override
