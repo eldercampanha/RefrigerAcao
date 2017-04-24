@@ -54,7 +54,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private Uri imageUri;
     public Order mOrder;
     private String fileName;
-    private boolean isRunning;
+//    private boolean isRunning;
 
 
     @Override
@@ -63,7 +63,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_order_details);
         ButterKnife.bind(this);
 
-        isRunning = true;
+//        isRunning = true;
 
         mOrder = (Order) getIntent().getSerializableExtra("ORDER");
         if(mOrder != null){
@@ -78,7 +78,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        isRunning = false;
+      //  isRunning = false;
     }
 
     public void setUpFirebaseRuntime(Order order) {
@@ -179,8 +179,9 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 @Override
                 public void success(Uri uri) {
 
-                    if(!isRunning)
-                        return;
+//                    if(!isRunning)
+//                        return;
+
 
                     imageview.setAlpha(1f);
                     // display taken picture
